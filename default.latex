@@ -89,7 +89,8 @@ $endif$
 $if(fontfamily)$
 \usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
 $else$
-\usepackage{lmodern}
+% \usepackage{lmodern}
+
 $endif$
 $if(linestretch)$
 \usepackage{setspace}
@@ -318,6 +319,19 @@ $endif$
 $if(pagestyle)$
 \pagestyle{$pagestyle$}
 $endif$
+
+% Customizations
+$if(plex)$
+\usepackage[T1]{fontenc}
+\usepackage[usefilenames,% Important for XeLaTeX
+  RM={Scale=0.94},
+  SS={Scale=0.94},
+  SScon={Scale=0.94},
+  TT={Scale=MatchLowercase,FakeStretch=0.9},
+  DefaultFeatures={Ligatures=Common}]{plex-otf}
+$if(sans)$\renewcommand*\familydefault{\sfdefault}$endif$%
+$endif$
+
 $for(header-includes)$
 $header-includes$
 $endfor$
