@@ -322,6 +322,7 @@ $endif$
 
 % Customizations
 $if(plex)$
+\frenchspacing
 \usepackage[T1]{fontenc}
 \usepackage[usefilenames,% Important for XeLaTeX
   RM={Scale=0.94},
