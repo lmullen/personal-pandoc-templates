@@ -376,7 +376,7 @@ $endfor$
 $endif$
 
 $if(title)$
-\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+\title{\vspace{-2em}\large \textbf{$title$}$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
 $if(subtitle)$
 $if(beamer)$
@@ -384,16 +384,16 @@ $else$
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+  \apptocmd{\@title}{\par {\normalsize #1 \par}}{}{}
 }
 \makeatother
 $endif$
-\subtitle{$subtitle$}
+\subtitle{$subtitle$\vspace{-1em}}
 $endif$
 $if(author)$
-\author{$for(author)$$author$$sep$ \and $endfor$}
+\author{$for(author)$\normalsize $author$$sep$ \and $endfor$}
 $endif$
-\date{$date$}
+\date{\vspace{-1em} \normalsize $date$}
 $if(beamer)$
 $if(institute)$
 \institute{$for(institute)$$institute$$sep$ \and $endfor$}
