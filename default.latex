@@ -388,12 +388,12 @@ $else$
 }
 \makeatother
 $endif$
-\subtitle{$subtitle$\vspace{-1em}}
+\subtitle{$subtitle$\vspace{-1.5em}}
 $endif$
 $if(author)$
 \author{$for(author)$\normalsize $author$$sep$ \and $endfor$}
 $endif$
-\date{\vspace{-1em} \normalsize $date$}
+\date{\vspace{-1.2em} \normalsize $date$}
 $if(beamer)$
 $if(institute)$
 \institute{$for(institute)$$institute$$sep$ \and $endfor$}
