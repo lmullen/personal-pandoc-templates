@@ -43,3 +43,7 @@ Both are referenced from `~/.pandoc/templates/` in the letter template.
 ## Current state
 
 Synced to upstream tag 3.9 (Pandoc 3.9).
+
+## Maintenance
+
+Periodically check for new upstream releases: `git fetch upstream --tags && git tag -l --sort=-version:refname | head -5`. Use `/sync-upstream` to merge a new tag while preserving local customizations.
