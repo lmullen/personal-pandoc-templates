@@ -24,12 +24,14 @@ Key YAML variables: `address`, `salutation`, `closing`, `signature`, `date`, `li
 
 ### `default.latex`
 
-The standard Pandoc default LaTeX template with two localized customization blocks:
+As of Pandoc 3.9, the default LaTeX template is modular: `default.latex` includes partials (`fonts.latex`, `font-settings.latex`, `common.latex`, `hypersetup.latex`, `passoptions.latex`, `document-metadata.latex`, `after-header-includes.latex`) via Pandoc's `$file.latex()$` syntax.
 
-1. **IBM Plex font support** (marked with `% Customizations` comment): Activated by setting `plex: true` in YAML. Loads `plex-otf` with tuned scaling. Optionally set `sans: true` to use Plex Sans as the default family.
+Two localized customization blocks in `default.latex`:
+
+1. **IBM Plex font support** (marked with `% Customizations` comment, between `header-includes` and `after-header-includes.latex()`): Activated by setting `plex: true` in YAML. Loads `plex-otf` with tuned scaling. Optionally set `sans: true` to use Plex Sans as the default family.
 2. **Compact title block**: Title, subtitle, author, and date use reduced `\vspace` and `\normalsize` to produce a tighter header.
 
-When merging upstream changes, these two blocks are the only areas that will conflict.
+When merging upstream changes, these two blocks are the only areas in `default.latex` that will conflict.
 
 ## Support files
 
@@ -40,4 +42,4 @@ Both are referenced from `~/.pandoc/templates/` in the letter template.
 
 ## Current state
 
-The fork is behind upstream (last synced around Pandoc 2.7.3; upstream is at 3.9+). Merge conflict artifacts (`default.latex.orig`, `default.latex.rej`) from a previous sync attempt are still in the repo and can be cleaned up.
+Synced to upstream tag 3.9 (Pandoc 3.9).

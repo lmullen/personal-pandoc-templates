@@ -1,18 +1,29 @@
 $if(title)$
-#+TITLE: $title$
+#+title: $title$
 
 $endif$
 $if(author)$
-#+AUTHOR: $for(author)$$author$$sep$; $endfor$
+#+author: $for(author)$$author$$sep$; $endfor$
 $endif$
 $if(date)$
-#+DATE: $date$
+#+date: $date$
+
+$endif$
+$if(options/pairs)$
+$for(options/pairs)$
+#+options: ${it.key}:${it.value}
+$endfor$
 
 $endif$
 $for(header-includes)$
 $header-includes$
 
 $endfor$
+$if(abstract)$
+#+begin_abstract
+$abstract$
+#+end_abstract
+$endif$
 $for(include-before)$
 $include-before$
 

@@ -13,19 +13,8 @@ $if(keywords)$
 $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
   <style>
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-$if(quotes)$
-      q { quotes: "“" "”" "‘" "’"; }
-$endif$
+    $styles.html()$
   </style>
-$if(highlighting-css)$
-  <style>
-$highlighting-css$
-  </style>
-$endif$
 $if(css)$
 $for(css)$
   <link rel="stylesheet" href="$css$">
@@ -182,7 +171,7 @@ $if(subtitle)$
   <h1 class="subtitle">$subtitle$</h1>
 $endif$
   <footer>
-    $if(author)$<span class="author">$for(author)$$author$$sep$, $endfor$</span>$endif$ · $if(date)$<span class="date">$date$</span>$endif$
+    $if(author)$<span class="author">$for(author)$$author$$sep$, $endfor$</span> · $endif$$if(institute)$<span class="institute">$for(institute)$$institute$$sep$, $endfor$</span> · $endif$$if(date)$<span class="date">$date$</span>$endif$
   </footer>
 </section>
 $endif$

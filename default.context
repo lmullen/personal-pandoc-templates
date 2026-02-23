@@ -1,3 +1,8 @@
+$if(tagging)$
+\setupbackend[format=pdf/ua-2]
+\enabledirectives[backend.usetags=mkiv]
+\setuptagging[state=start]
+$endif$
 $if(context-lang)$
 \mainlanguage[$context-lang$]
 $endif$
@@ -23,11 +28,11 @@ $endif$
   style=$linkstyle$,
   color=$linkcolor$,
   contrastcolor=$linkcontrastcolor$]
+\setupurl[style=$urlstyle$]
 
 % make chapter, section bookmarks visible when opening document
 \placebookmarks[chapter, section, subsection, subsubsection, subsubsubsection, subsubsubsubsection][chapter, section]
-\setupinteractionscreen[option=bookmark]
-\setuptagging[state=start]
+\setupinteractionscreen[option={bookmark,title}]
 
 $if(papersize)$
 \setuppapersize[$for(papersize)$$papersize$$sep$,$endfor$]
@@ -37,28 +42,42 @@ $if(layout)$
 $endif$
 $if(pagenumbering)$
 \setuppagenumbering[$for(pagenumbering)$$pagenumbering$$sep$,$endfor$]
+$else$
+\setuppagenumbering[location={footer,middle}]
 $endif$
 $if(pdfa)$
 % attempt to generate PDF/A
 \setupbackend
-  [format=PDF/A-1b:2005,
-   intent=sRGB IEC61966-2.1,
-   profile=sRGB.icc]
+  [format=PDF/A-$pdfa$,
+   profile={$if(pdfaiccprofile)$$for(pdfaiccprofile)$$pdfaiccprofile$$sep$,$endfor$$else$sRGB.icc$endif$},
+   intent=$if(pdfaintent)$$pdfaintent$$else$sRGB IEC61966-2.1$endif$]
 $endif$
+\setupstructure[state=start,method=auto]
 
 % use microtypography
 \definefontfeature[default][default][script=latn, protrusion=quality, expansion=quality, itlc=yes, textitalics=yes, onum=yes, pnum=yes]
+\definefontfeature[default:tnum][default][tnum=yes, pnum=no]
 \definefontfeature[smallcaps][script=latn, protrusion=quality, expansion=quality, smcp=yes, onum=yes, pnum=yes]
 \setupalign[hz,hanging]
 \setupitaliccorrection[global, always]
 
 \setupbodyfontenvironment[default][em=italic] % use italic as em, not slanted
 
+$-- set up font fallbacks
+$for(mainfontfallback)$
+\definefallbackfamily[mainface][rm][$mainfontfallback/nowrap$][range=0x0000-0xFFFF, check=yes, force=no]
+$endfor$
+$for(sansfontfallback)$
+\definefallbackfamily[mainface][ss][$sansfontfallback/nowrap$][range=0x0000-0xFFFF, check=yes, force=no]
+$endfor$
+$for(monofontfallback)$
+\definefallbackfamily[mainface][tt][$monofontfallback/nowrap$][range=0x0000-0xFFFF, check=yes, force=no]
+$endfor$
 \definefallbackfamily[mainface][rm][CMU Serif][preset=range:greek, force=yes]
-\definefontfamily[mainface][rm][$if(mainfont)$$mainfont$$else$Latin Modern Roman$endif$]
-\definefontfamily[mainface][mm][$if(mathfont)$$mathfont$$else$Latin Modern Math$endif$]
-\definefontfamily[mainface][ss][$if(sansfont)$$sansfont$$else$Latin Modern Sans$endif$]
-\definefontfamily[mainface][tt][$if(monofont)$$monofont$$else$Latin Modern Typewriter$endif$][features=none]
+\definefontfamily[mainface][rm][$if(mainfont)$$mainfont/nowrap$$else$Latin Modern Roman$endif$]
+\definefontfamily[mainface][mm][$if(mathfont)$$mathfont/nowrap$$else$Latin Modern Math$endif$]
+\definefontfamily[mainface][ss][$if(sansfont)$$sansfont/nowrap$$else$Latin Modern Sans$endif$]
+\definefontfamily[mainface][tt][$if(monofont)$$monofont/nowrap$$else$Latin Modern Typewriter$endif$][features=none]
 \setupbodyfont[mainface$if(fontsize)$,$fontsize$$endif$]
 
 \setupwhitespace[$if(whitespace)$$whitespace$$else$medium$endif$]
@@ -69,12 +88,16 @@ $if(interlinespace)$
 \setupinterlinespace[$for(interlinespace)$$interlinespace$$sep$,$endfor$]
 $endif$
 
-\setuphead[chapter]            [style=\tfd,header=empty]
-\setuphead[section]            [style=\tfc]
-\setuphead[subsection]         [style=\tfb]
+\setuphead[chapter]            [style=\tfd\setupinterlinespace,header=empty]
+\setuphead[section]            [style=\tfc\setupinterlinespace]
+\setuphead[subsection]         [style=\tfb\setupinterlinespace]
 \setuphead[subsubsection]      [style=\bf]
 \setuphead[subsubsubsection]   [style=\sc]
 \setuphead[subsubsubsubsection][style=\it]
+
+\definesectionlevels
+   [default]
+   [section, subsection, subsubsection, subsubsubsection, subsubsubsubsection]
 
 $if(headertext)$
 \setupheadertexts$for(headertext)$[$headertext$]$endfor$
@@ -94,16 +117,43 @@ $endif$
 \setupitemize[autointro]    % prevent orphan list intro
 \setupitemize[indentnext=no]
 
+\defineitemgroup[enumerate]
+\setupenumerate[each][fit][itemalign=left,distance=.5em,style={\feature[+][default:tnum]}]
+
 \setupfloat[figure][default={here,nonumber}]
 \setupfloat[table][default={here,nonumber}]
 
-\setupthinrules[width=15em] % width of horizontal rules
-
 \setupxtable[frame=off]
-\setupxtable[head][topframe=on,bottomframe=on]
+\setupxtable[head][topframe=on]
 \setupxtable[body][]
-\setupxtable[foot][bottomframe=on]
+\setupxtable[foot][]
+\setupxtable[lastrow][bottomframe=on]
 
+$if(emphasis-commands)$
+$emphasis-commands$
+$endif$
+$if(highlighting-commands)$
+$highlighting-commands$
+$endif$
+$if(csl-refs)$
+\definemeasure[cslhangindent][1.5em]
+\definenarrower[hangingreferences][left=\measure{cslhangindent}]
+\definestartstop [cslreferences] [
+	$if(csl-hanging-indent)$
+	before={%
+	  \starthangingreferences[left]
+      \setupindenting[-\leftskip,yes,first]
+      \doindentation
+  	},
+  	after=\stophangingreferences,
+	$endif$
+]
+$endif$
+$if(includesource)$
+$for(sourcefile)$
+\attachment[file=$curdir$/$sourcefile$,method=hidden]
+$endfor$
+$endif$
 $for(header-includes)$
 $header-includes$
 $endfor$
@@ -111,18 +161,18 @@ $endfor$
 \starttext
 $if(title)$
 \startalignment[middle]
-  {\tfd $title$}
+  {\tfd\setupinterlinespace $title$}
 $if(subtitle)$
   \smallskip
-  {\tfa $subtitle$}
+  {\tfa\setupinterlinespace $subtitle$}
 $endif$
 $if(author)$
   \smallskip
-  {\tfa $for(author)$$author$$sep$\crlf $endfor$}
+  {\tfa\setupinterlinespace $for(author)$$author$$sep$\crlf $endfor$}
 $endif$
 $if(date)$
   \smallskip
-  {\tfa $date$}
+  {\tfa\setupinterlinespace $date$}
 $endif$
   \bigskip
 \stopalignment
@@ -140,11 +190,11 @@ $endfor$
 $if(toc)$
 \completecontent
 $endif$
-$if(lot)$
-\completelistoftables
-$endif$
 $if(lof)$
 \completelistoffigures
+$endif$
+$if(lot)$
+\completelistoftables
 $endif$
 
 $body$

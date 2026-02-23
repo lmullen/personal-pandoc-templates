@@ -17,19 +17,8 @@ $if(keywords)$
 $endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
   <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-$if(quotes)$
-      q { quotes: "“" "”" "‘" "’"; }
-$endif$
+    $styles.html()$
   </style>
-$if(highlighting-css)$
-  <style type="text/css">
-$highlighting-css$
-  </style>
-$endif$
   <link rel="stylesheet" type="text/css" media="screen, projection, print"
     href="$slideous-url$/slideous.css" />
 $for(css)$
@@ -74,9 +63,16 @@ $if(title)$
 $if(subtitle)$
   <h1 class="subtitle">$subtitle$</h1>
 $endif$
+$if(author)$
   <p class="author">
 $for(author)$$author$$sep$<br/>$endfor$
   </p>
+$endif$
+$if(institute)$
+  <p class="institute">
+$for(institute)$$institute$$sep$<br/>$endfor$
+  </p>
+$endif$
 $if(date)$
   <p class="date">$date$</p>
 $endif$
