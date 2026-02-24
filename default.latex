@@ -67,6 +67,23 @@ $if(sans)$  \renewcommand*\familydefault{\sfdefault}$endif$
 \fi
 $endif$
 
+% Customizations: heading sizes (minor second scale, ratio ~1.067)
+\usepackage{titlesec}
+\makeatletter
+\titleformat{\section}
+  {\fontsize{\dimexpr \f@size pt * 1138 / 1000\relax}{\baselineskip}\selectfont\bfseries}
+  {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{1.5\baselineskip}{0.5\baselineskip}
+\titleformat{\subsection}
+  {\fontsize{\dimexpr \f@size pt * 1067 / 1000\relax}{\baselineskip}\selectfont\bfseries}
+  {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{1\baselineskip}{0\baselineskip}
+\titleformat{\subsubsection}[runin]
+  {\normalfont\bfseries}
+  {\thesubsubsection}{0pt}{}[.]
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0.333em}
+\makeatother
+
 $after-header-includes.latex()$
 $hypersetup.latex()$
 $if(pdf-trailer-id)$
@@ -84,13 +101,15 @@ $if(pdf-trailer-id)$
 $endif$
 
 $if(title)$
-\title{\vspace{-2em}\large \textbf{$title$}$if(thanks)$\thanks{$thanks$}$endif$}
+\makeatletter
+\title{\vspace{-2em}\normalsize\fontsize{\dimexpr \f@size pt * 1138 / 1000\relax}{\dimexpr \f@size pt * 1350 / 1000\relax}\selectfont \textbf{$title$}$if(thanks)$\thanks{$thanks$}$endif$}
+\makeatother
 $endif$
 $if(subtitle)$
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\normalsize #1 \par}}{}{}
+  \apptocmd{\@title}{\par {\normalsize\fontsize{\dimexpr \f@size pt * 1067 / 1000\relax}{\dimexpr \f@size pt * 1300 / 1000\relax}\selectfont #1 \par}}{}{}
 }
 \makeatother
 \subtitle{$subtitle$\vspace{-1.5em}}

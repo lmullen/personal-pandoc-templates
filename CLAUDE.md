@@ -26,12 +26,13 @@ Key YAML variables: `address`, `salutation`, `closing`, `signature`, `date`, `li
 
 As of Pandoc 3.9, the default LaTeX template is modular: `default.latex` includes partials (`fonts.latex`, `font-settings.latex`, `common.latex`, `hypersetup.latex`, `passoptions.latex`, `document-metadata.latex`, `after-header-includes.latex`) via Pandoc's `$file.latex()$` syntax.
 
-Two localized customization blocks in `default.latex`:
+Three localized customization blocks in `default.latex`:
 
-1. **IBM Plex font support** (marked with `% Customizations` comment, between `header-includes` and `after-header-includes.latex()`): Activated by setting `plex: true` in YAML. Loads `plex-otf` with tuned scaling. Optionally set `sans: true` to use Plex Sans as the default family.
-2. **Compact title block**: Title, subtitle, author, and date use reduced `\vspace` and `\normalsize` to produce a tighter header.
+1. **IBM Plex font support** (marked with `% Customizations: IBM Plex` comment): Loads IBM Plex fonts by default unless the user specifies `mainfont` or `fontfamily`. Optionally set `sans: true` to use Plex Sans as the default family.
+2. **Heading sizes** (marked with `% Customizations: heading sizes` comment): Uses `titlesec` with a minor second scale (ratio ~1.067). H1 is 1.138x body size, H2 is 1.067x, H3 is body size rendered as a bold run-in heading followed by a period. Sizes scale with the base font size. Must load before `hyperref`/`bookmark`.
+3. **Compact title block**: Title, subtitle, author, and date use reduced `\vspace` and `\normalsize` to produce a tighter header.
 
-When merging upstream changes, these two blocks are the only areas in `default.latex` that will conflict.
+When merging upstream changes, these three blocks are the only areas in `default.latex` that will conflict.
 
 ## Support files
 
