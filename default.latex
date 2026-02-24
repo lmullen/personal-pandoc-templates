@@ -27,6 +27,10 @@ $else$
 \usepackage[margin=1in]{geometry}
 $endif$
 \usepackage{amsmath,amssymb}
+$if(linestretch)$
+$else$
+\usepackage{setspace}
+$endif$
 $if(cancel)$
 \usepackage{cancel}
 $endif$
@@ -102,22 +106,46 @@ $if(pdf-trailer-id)$
 \fi
 $endif$
 
+$-- Title metadata (for hyperref/PDF metadata)
+$if(title)$
+\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+$endif$
+$if(author)$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+$else$
+\author{}
+$endif$
+$if(date)$
+\date{$date$}
+$else$
+\date{}
+$endif$
+
+$-- Customizations: compact title block with conditional spacing
 $if(title)$
 \makeatletter
-\title{\vspace{-2em}\normalsize\fontsize{\dimexpr \f@size pt * 1138 / 1000\relax}{\dimexpr \f@size pt * 1350 / 1000\relax}\selectfont \textbf{$title$}$if(thanks)$\thanks{$thanks$}$endif$}
-\makeatother
-$endif$
+\renewcommand{\@maketitle}{%
+  \newpage
+  \null
+  \begin{center}%
+  \let \footnote \thanks
+    {\normalsize\fontsize{\dimexpr \f@size pt * 1138 / 1000\relax}{\dimexpr \f@size pt * 1350 / 1000\relax}\selectfont \textbf{\@title}\par}%
 $if(subtitle)$
-\usepackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\normalsize\fontsize{\dimexpr \f@size pt * 1067 / 1000\relax}{\dimexpr \f@size pt * 1300 / 1000\relax}\selectfont #1 \par}}{}{}
-}
-\makeatother
-\subtitle{$subtitle$\vspace{-1.5em}}
+    {\normalsize\fontsize{\dimexpr \f@size pt * 1067 / 1000\relax}{\dimexpr \f@size pt * 1300 / 1000\relax}\selectfont $subtitle$\par}%
 $endif$
-\author{$for(author)$\normalsize $author$$sep$ \and $endfor$}
-\date{\vspace{-1.2em} \normalsize $date$}
+$if(author)$
+    \vskip 0.5em%
+    {\normalsize \@author\par}%
+$endif$
+$if(date)$
+    \vskip 0.3em%
+    {\normalsize \@date}%
+$endif$
+  \end{center}%
+  \par
+  \vskip 1em}
+\makeatother
+$endif$
 
 \begin{document}
 $if(has-frontmatter)$
