@@ -23,6 +23,8 @@ $endif$
 \usepackage{xcolor}
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+$else$
+\usepackage[margin=1in]{geometry}
 $endif$
 \usepackage{amsmath,amssymb}
 $if(cancel)$
@@ -156,6 +158,8 @@ $if(lot)$
 $endif$
 $if(linestretch)$
 \setstretch{$linestretch$}
+$else$
+\setstretch{1.1}
 $endif$
 $if(has-frontmatter)$
 \mainmatter
