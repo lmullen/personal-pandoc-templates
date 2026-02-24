@@ -43,17 +43,28 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
-% Customizations
-$if(plex)$
+% Customizations: IBM Plex fonts by default, unless user specifies custom fonts
+$if(mainfont)$
+$-- User specified mainfont; skip Plex
+$elseif(fontfamily)$
+$-- User specified fontfamily; skip Plex
+$else$
 \frenchspacing
-\usepackage[T1]{fontenc}
-\usepackage[usefilenames,%
-  RM={Scale=0.94},
-  SS={Scale=0.94},
-  SScon={Scale=0.94},
-  TT={Scale=MatchLowercase,FakeStretch=0.9},
-  DefaultFeatures={Ligatures=Common}]{plex-otf}
-$if(sans)$\renewcommand*\familydefault{\sfdefault}$endif$%
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[scale=0.94]{plex-serif}
+  \usepackage[scale=0.94]{plex-sans}
+  \usepackage[scale=0.88]{plex-mono}
+$if(sans)$  \renewcommand*\familydefault{\sfdefault}$endif$
+\else
+  \usepackage[%
+    RM={Scale=0.94},
+    SS={Scale=0.94},
+    SScon={Scale=0.94},
+    TT={Scale=MatchLowercase,FakeStretch=0.9},
+    DefaultFeatures={Ligatures=Common}]{plex-otf}
+$if(sans)$  \renewcommand*\familydefault{\sfdefault}$endif$
+\fi
 $endif$
 
 $after-header-includes.latex()$
